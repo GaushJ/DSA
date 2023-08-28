@@ -1,12 +1,37 @@
-var a = 10;
-function displayValue() {
-    var a = 100;
-    return a
+//memoiazation
+//storing in cache
+let sum = 0;
+const calc = (n) => {
+    for (let i = 0; i < n; i++) {
+        sum += i
+    }
+    return sum;
 }
-function displayValue2() {
-    var a = 1000;
-    return a
+function memoize(fun) {
+    let cache = {};
+    return function (args) {
+
+        let n = JSON.stringify(args)
+
+        if (n in cache) {
+            console.log("cache");
+            return cache[n];
+        } else {
+            console.log("element not found")
+            const result = fun(n);
+            cache[n] = result;
+            return result;
+        }
+    }
 }
-displayValue()
-displayValue2();
-console.log(a)
+
+console.time();
+
+const memoizedFunction = memoize(calc);
+console.log(memoizedFunction(15))
+console.timeEnd();
+
+console.time();
+console.log(memoizedFunction(15))
+console.timeEnd()
+
